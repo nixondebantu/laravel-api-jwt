@@ -23,3 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+
+// get user details with token
+Route::get('user', [AuthController::class, 'getUserDetails']);
+
+// update user details without id and registration number
+Route::post('update-user-details', [AuthController::class, 'updateUserDetails']);

@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -32,6 +33,29 @@ class AuthController extends Controller
             'dp_url' => $request->dp_url,
         ]);
         return response()->json(['user' => $user]);
+    }
+
+    // get user details with token
+    public function getUserDetails(Request $request)
+    {
+        $user = auth()->user();
+        // return error if user is not found
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json(['user' => $user]);
+    }
+
+    // upadte user details without id and registration number
+    public function updateUserDetails(Request $request)
+    {
+        $user = auth()->user();
+        DB::table('users')->where('id', $user->id)->update([
+            'name' => $request->fullname,
+            'contact' => $request->contact,
+            'dp_url' => $request->dp_url,
+        ]);
+        return response()->json(['user' => auth()->user()]);
     }
 
     // return jwt token
