@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auction\AuctionController;
+use App\Http\Controllers\Api\Team\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('auctions', [AuctionController::class, 'store']);
     Route::put('auctions/{id}', [AuctionController::class, 'update']);
     Route::delete('auctions/{id}', [AuctionController::class, 'destroy']);
+});
+
+Route::get('teams', [TeamController::class, 'index']);
+Route::get('teams/{team}', [TeamController::class, 'show']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('teams', [TeamController::class, 'store']);
+    Route::put('teams/{team}', [TeamController::class, 'update']);
+    Route::delete('teams/{team}', [TeamController::class, 'destroy']);
+    Route::put('teams/{team}/accept', [TeamController::class, 'acceptTeam']);
 });

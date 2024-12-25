@@ -14,7 +14,8 @@ class Auction extends Model
         'auction_date',
         'bid_starting_price',
         'team_balance',
-        'min_bid_increase_amount'
+        'min_bid_increase_amount',
+        'min_player_amount'
     ];
 
     public function host()

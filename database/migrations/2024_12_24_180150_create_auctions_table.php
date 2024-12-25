@@ -17,6 +17,7 @@ class CreateAuctionsTable extends Migration
             $table->integer('bid_starting_price');
             $table->integer('team_balance');
             $table->integer('min_bid_increase_amount');
+            $table->integer('min_player_amount');
             $table->timestamps();
         });
     }

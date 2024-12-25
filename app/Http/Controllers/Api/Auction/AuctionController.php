@@ -37,7 +37,8 @@ class AuctionController extends Controller
             'auction_date' => 'required|date',
             'bid_starting_price' => 'required|numeric',
             'team_balance' => 'required|numeric',
-            'min_bid_increase_amount' => 'required|numeric'
+            'min_bid_increase_amount' => 'required|numeric',
+            'min_player_amount' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +69,8 @@ class AuctionController extends Controller
             'auction_date' => 'required|date',
             'bid_starting_price' => 'required|numeric',
             'team_balance' => 'required|numeric',
-            'min_bid_increase_amount' => 'required|numeric'
+            'min_bid_increase_amount' => 'required|numeric',
+            'min_player_amount' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
