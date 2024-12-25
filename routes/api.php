@@ -49,6 +49,7 @@ Route::middleware('auth:api')->group(function () {
     Route::put('teams/{team}', [TeamController::class, 'update']);
     Route::delete('teams/{team}', [TeamController::class, 'destroy']);
     Route::put('teams/{team}/accept', [TeamController::class, 'acceptTeam']);
+    Route::get('teams/{team}/players', [TeamController::class, 'getTeamPlayers']);
 });
 
 // Player routes
@@ -60,4 +61,12 @@ Route::middleware('auth:api')->group(function () {
     Route::put('players/{player}', [PlayerController::class, 'update']);
     Route::delete('players/{player}', [PlayerController::class, 'destroy']);
     Route::put('players/{player}/category', [PlayerController::class, 'assignCategory']);
+});
+
+// Auction Process Routes
+Route::middleware('auth:api')->group(function () {
+    Route::post('auctions/{auction}/start', [AuctionController::class, 'startAuction']);
+    Route::post('auctions/{auction}/next', [AuctionController::class, 'nextPlayer']);
+    Route::post('auctions/{auction}/bid', [AuctionController::class, 'placeBid']);
+    Route::get('auctions/{auction}/state', [AuctionController::class, 'getAuctionState']);
 });

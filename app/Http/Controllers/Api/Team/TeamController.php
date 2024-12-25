@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Team;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use App\Models\Auction;
+use App\Models\Player;
+use App\Models\BidHistory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -93,5 +95,42 @@ class TeamController extends Controller
 
         $team->delete();
         return response()->json(['message' => 'Team deleted successfully'], Response::HTTP_OK);
+    }
+
+    public function getTeamPlayers(Team $team)
+    {
+        // Check if user is authorized to view this team's players
+        if ($team->manager_id !== auth()->id() && !$team->auction->hostid !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
+        }
+
+        $players = Player::where('tid', $team->tid)
+            ->with(['user:id,name,email'])
+            ->get()
+            ->map(function ($player) {
+                // Get the maximum bid amount for this player
+                $maxBid = BidHistory::where('player_id', $player->id)
+                    ->where('bidder_team_id', $player->tid)
+                    ->max('bid_amount');
+
+                return [
+                    'id' => $player->id,
+                    'name' => $player->user->name,
+                    'position' => $player->position,
+                    'category' => $player->category,
+                    'status' => $player->status,
+                    'cost' => $maxBid ?? 0  // Use max bid amount or 0 if no bids
+                ];
+            });
+
+        return response()->json([
+            'team' => [
+                'id' => $team->tid,
+                'name' => $team->name,
+                'total_cost' => $team->cost,
+                'balance' => $team->auction->team_balance - $team->cost
+            ],
+            'players' => $players
+        ]);
     }
 }

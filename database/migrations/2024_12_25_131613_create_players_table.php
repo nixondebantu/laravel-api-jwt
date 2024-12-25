@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('category')->default('Unknown');
             $table->string('status')->default('Queued');
             $table->foreignId('tid')->nullable()->constrained('teams', 'tid')->onDelete('set null');
+            $table->integer('cost')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

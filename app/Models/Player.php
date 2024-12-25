@@ -17,6 +17,7 @@ class Player extends Model
         'category',
         'status',
         'tid',
+        'cost'
     ];
 
     public function auction()
