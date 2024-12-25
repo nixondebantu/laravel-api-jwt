@@ -1,66 +1,150 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### **API Overview**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This API facilitates auction management, user authentication, team creation, and player bidding. Below are the categorized functionalities:
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### **Authentication**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### **Register**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Endpoint**: `POST /api/register`
+-   **Body**:
+    ```json
+    {
+        "fullname": "Your Name",
+        "registration_number": "Unique Reg No.",
+        "email": "your_email@example.com",
+        "contact": "Your Contact Number",
+        "password": "your_password"
+    }
+    ```
+-   **Response**: Returns user details and an access token.
 
-## Learning Laravel
+#### **Login**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **Endpoint**: `POST /api/login`
+-   **Body**:
+    ```json
+    {
+        "email": "your_email@example.com",
+        "password": "your_password"
+    }
+    ```
+-   **Response**: Returns an access token for authentication.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+#### **Get User Details**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Endpoint**: `GET /api/user`
+-   **Headers**: Include `Authorization: Bearer <token>`.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### **Auction Management**
 
-### Premium Partners
+#### **Create Auction**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+-   **Endpoint**: `POST /api/auctions`
+-   **Body**:
+    ```json
+    {
+        "title": "Auction Title",
+        "description": "Auction Details",
+        "auction_date": "YYYY-MM-DD",
+        "bid_starting_price": 200,
+        "team_balance": 10000,
+        "min_bid_increase_amount": 50,
+        "min_player_amount": 10
+    }
+    ```
+-   **Response**: Returns created auction details.
 
-## Contributing
+#### **Get Auctions**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **Endpoint**: `GET /api/auctions`
+-   **Response**: List of all auctions.
 
-## Code of Conduct
+#### **Get Auction By ID**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **Endpoint**: `GET /api/auctions/{id}`
+-   **Response**: Details of the specified auction.
 
-## Security Vulnerabilities
+#### **Update Auction**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Endpoint**: `PUT /api/auctions/{id}`
+-   **Body**: Similar to "Create Auction".
+-   **Response**: Updated auction details.
 
-## License
+#### **Delete Auction**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   **Endpoint**: `DELETE /api/auctions/{id}`
+-   **Response**: Confirmation message.
+
+#### **Start Auction**
+
+-   **Endpoint**: `POST /api/auctions/{id}/start`
+-   **Response**: Starts the auction and returns current auction state.
+
+---
+
+### **Team Management**
+
+#### **Create Team**
+
+-   **Endpoint**: `POST /api/teams`
+-   **Body**:
+    ```json
+    {
+        "name": "Team Name",
+        "aid": "Auction ID"
+    }
+    ```
+-   **Response**: Returns created team details.
+
+#### **Get Teams**
+
+-   **Endpoint**: `GET /api/teams?auction_id={id}`
+-   **Response**: List of teams associated with the auction.
+
+#### **Update Team**
+
+-   **Endpoint**: `PUT /api/teams/{id}`
+-   **Body**: Can update attributes like `logo_url`.
+
+#### **Delete Team**
+
+-   **Endpoint**: `DELETE /api/teams/{id}`
+-   **Response**: Confirmation message.
+
+---
+
+### **Player Management**
+
+#### **Get All Players**
+
+-   **Endpoint**: `GET /api/players?auctionId={id}`
+-   **Response**: List of players in the specified auction.
+
+#### **Get Team Players**
+
+-   **Endpoint**: `GET /api/teams/{team_id}/players`
+-   **Response**: Players associated with the team.
+
+---
+
+### **Auction Actions**
+
+#### **Place Bid**
+
+-   **Endpoint**: `POST /api/auctions/{id}/bid?fix={amount}`
+-   **Response**: Updates the current bid and state.
+
+#### **Get Auction State**
+
+-   **Endpoint**: `GET /api/auctions/{id}/state`
+-   **Response**: Details of the ongoing auction state.
+
+#### **Next Player**
+
+-   **Endpoint**: `POST /api/auctions/{id}/next`
+-   **Response**: Moves the auction to the next player or completes the auction.
