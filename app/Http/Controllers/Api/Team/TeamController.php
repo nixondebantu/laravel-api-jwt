@@ -36,10 +36,10 @@ class TeamController extends Controller
         // Ensure one user can register for one team in a single auction
         $existingTeam = Team::where('manager_id', $userId)
             ->where('aid', $validated['aid'])
-            ->first();
+            ->exists();
 
         if ($existingTeam) {
-            return response()->json(['message' => 'You have already registered a team for this auction'], Response::HTTP_CONFLICT);
+            return response()->json(['message' => 'You can only register one team per auction'], Response::HTTP_CONFLICT);
         }
 
         $validated['manager_id'] = $userId;
@@ -92,6 +92,6 @@ class TeamController extends Controller
         }
 
         $team->delete();
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->json(['message' => 'Team deleted successfully'], Response::HTTP_OK);
     }
 }
