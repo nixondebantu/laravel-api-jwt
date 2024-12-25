@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auction\AuctionController;
 use App\Http\Controllers\Api\Team\TeamController;
+use App\Http\Controllers\Api\Player\PlayerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,15 @@ Route::middleware('auth:api')->group(function () {
     Route::put('teams/{team}', [TeamController::class, 'update']);
     Route::delete('teams/{team}', [TeamController::class, 'destroy']);
     Route::put('teams/{team}/accept', [TeamController::class, 'acceptTeam']);
+});
+
+// Player routes
+Route::get('players', [PlayerController::class, 'index']);
+Route::get('players/{player}', [PlayerController::class, 'show']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('players/register', [PlayerController::class, 'register']);
+    Route::put('players/{player}', [PlayerController::class, 'update']);
+    Route::delete('players/{player}', [PlayerController::class, 'destroy']);
+    Route::put('players/{player}/category', [PlayerController::class, 'assignCategory']);
 });
